@@ -47,7 +47,6 @@
 
 
 <script>
-  // Performance monitoring
   if (window.performance && window.performance.mark) {
     window.performance.mark('posts-start');
   }
@@ -74,15 +73,14 @@
 ::::
 
 <script>
-  // Defer non-critical JavaScript
+  
   document.addEventListener('DOMContentLoaded', function() {
-    // Performance mark for DOMContentLoaded
+
     if (window.performance && window.performance.mark) {
       window.performance.mark('dom-content-loaded');
       window.performance.measure('dom-processing', 'posts-start', 'dom-content-loaded');
     }
-    
-    // Use requestIdleCallback for non-critical operations
+
     const scheduleIdleTask = (callback) => {
       if ('requestIdleCallback' in window) {
         window.requestIdleCallback(callback, { timeout: 2000 });
@@ -90,26 +88,22 @@
         setTimeout(callback, 1);
       }
     };
-    
-    // Optimize animations with requestAnimationFrame
+
     const scheduleAnimation = (callback) => {
       return window.requestAnimationFrame(callback);
     };
-    
-    // Enhanced Intersection Observer for lazy loading
+
     if ('IntersectionObserver' in window) {
-      // Create connection observer for preconnecting to image domains
+
       const uniqueDomains = new Set();
       document.querySelectorAll('img[data-src]').forEach(img => {
         try {
           const url = new URL(img.dataset.src);
           uniqueDomains.add(url.origin);
         } catch (e) {
-          // Ignore invalid URLs
         }
       });
       
-      // Preconnect to image domains
       uniqueDomains.forEach(domain => {
         const link = document.createElement('link');
         link.rel = 'preconnect';
@@ -117,35 +111,26 @@
         document.head.appendChild(link);
       });
       
-      // Get all images that should be lazy loaded
       const lazyImages = document.querySelectorAll('img[data-src]');
       
-      // Create an intersection observer with optimized options
       const imageObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
-          // If the image is in the viewport
           if (entry.isIntersecting) {
             const img = entry.target;
             
-            // Performance mark for image loading
             if (window.performance && window.performance.mark) {
               window.performance.mark(`image-load-start-${img.dataset.src}`);
             }
             
-            // Create new image to preload
             const tempImage = new Image();
             
             tempImage.onload = function() {
-              // Replace the src with the data-src
               img.src = img.dataset.src;
               
-              // Remove the data-src attribute
               img.removeAttribute('data-src');
               
-              // Add loaded class for CSS transitions
               img.classList.add('loaded');
               
-              // Performance mark for image loaded
               if (window.performance && window.performance.mark) {
                 window.performance.mark(`image-load-end-${img.src}`);
                 window.performance.measure(
@@ -158,21 +143,18 @@
             
             tempImage.src = img.dataset.src;
             
-            // Stop observing this image
             observer.unobserve(img);
           }
         });
       }, {
-        rootMargin: '200px 0px', // Start loading images when they're 200px from viewport
-        threshold: 0.01 // Trigger when at least 1% of the image is visible
+        rootMargin: '200px 0px',
+        threshold: 0.01 
       });
-      
-      // Observe each image
+
       lazyImages.forEach(img => {
         imageObserver.observe(img);
       });
     } else {
-      // Fallback for browsers that don't support IntersectionObserver
       scheduleIdleTask(() => {
         const lazyImages = document.querySelectorAll('img[data-src]');
         lazyImages.forEach(img => {
@@ -181,26 +163,21 @@
         });
       });
     }
-    
-    // Add animation delay to grid items for staggered appearance
-    // Use requestAnimationFrame for smoother animations
+
     scheduleAnimation(() => {
       const gridItems = document.querySelectorAll('.sd-col');
       gridItems.forEach((item, index) => {
         item.style.animationDelay = `${index * 0.05}s`;
       });
     });
-    
-    // Report performance metrics
+
     if (window.performance && window.performance.getEntriesByType) {
       scheduleIdleTask(() => {
-        // Get all performance entries
+
         const perfEntries = performance.getEntriesByType('measure');
         
-        // Log performance metrics
         console.log('Performance metrics:', perfEntries);
-        
-        // Send metrics to analytics if needed
+
         if (window.navigator.sendBeacon) {
           try {
             const metrics = JSON.stringify(perfEntries);
@@ -212,19 +189,16 @@
       });
     }
   });
-  
-  // Use passive event listeners for better scrolling performance
+
   window.addEventListener('scroll', function() {
-    // Throttled scroll handler
+
   }, { passive: true });
-  
-  // Mark when all content is loaded
+
   window.addEventListener('load', function() {
     if (window.performance && window.performance.mark) {
       window.performance.mark('posts-fully-loaded');
       window.performance.measure('full-page-load', 'posts-start', 'posts-fully-loaded');
-      
-      // Log the full page load time
+
       const loadTime = performance.getEntriesByName('full-page-load')[0].duration;
       console.log(`Page fully loaded in ${loadTime.toFixed(2)}ms`);
     }
