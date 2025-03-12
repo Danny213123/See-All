@@ -15,56 +15,6 @@
   }
 </script>
 
-<style>
-  
-  img {
-    content-visibility: auto; 
-    will-change: transform; 
-    contain: layout paint; 
-  }
-  
-  
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .sd-col {
-    animation: fadeIn 0.3s ease-out forwards;
-    contain: content; 
-  }
-  
-  
-  .sd-card-body {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-  }
-  
-  
-  body {
-    text-rendering: optimizeSpeed;
-    -webkit-font-smoothing: antialiased;
-  }
-  
-  
-  .sd-card {
-    backface-visibility: hidden;
-    transform: translateZ(0); 
-  }
-  
-  
-  #buttonWrapper {
-    will-change: transform;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
-  
-  
-  .container {
-    contain: layout style;
-  }
-</style>
-
 <script>
   // Optimized event listener for buttons
   document.addEventListener('DOMContentLoaded', function() {
@@ -298,5 +248,3 @@
   <li><a href="blog/atom.xml"> Subscribe to our <i class="fa fa-rss fa-rotate-270"></i> RSS feed</a> (Requires an RSS reader available as browser plugins.) </li>
   <li><a href="https://www.amd.com/en/forms/sign-up/developer-news.html?temp_comments=ROCm%20Software"> Signup for the ROCm newsletter </a></li>
 </ul>
-
-

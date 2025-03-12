@@ -138,7 +138,7 @@ html_meta:
         
         logger.info("Generating grid items in parallel")
 
-        grid_items = generate_grid_items(all_blogs, 12, used)
+        grid_items = generate_grid_items(all_blogs, 4, used)
 
         eco_blogs = rocmblogs.blogs.blogs_categories.get("Ecosystems and Partners", [])
         eco_grid_items = generate_grid_items(eco_blogs, 4, used)
@@ -632,7 +632,7 @@ html_meta:
 "property=og:locale": "en_US"
 ---
 
-# Recent Posts{page_heading_suffix}
+# Recent Posts{page_title_suffix}
 
 <style>
 {CSS}
@@ -666,7 +666,7 @@ html_meta:
         # Get all blogs
         all_blogs = rocmblogs.blogs.get_blogs()
         
-        blogs_per_page = 24
+        blogs_per_page = 12
         
         # Calculate total number of pages
         total_pages = max(1, (len(all_blogs) + blogs_per_page - 1) // blogs_per_page)
@@ -730,7 +730,6 @@ html_meta:
             
             page_title_suffix = f" - Page {page_num}" if page_num > 1 else ""
             page_description_suffix = f" (Page {page_num} of {total_pages})" if page_num > 1 else ""
-            page_heading_suffix = f" (Page {page_num})" if page_num > 1 else ""
             
             updated_html = posts_template.format(
                 CSS=css_content,
@@ -739,7 +738,6 @@ html_meta:
                 pagination_controls=pagination_controls,
                 page_title_suffix=page_title_suffix,
                 page_description_suffix=page_description_suffix,
-                page_heading_suffix=page_heading_suffix,
                 current_page=page_num
             )
             
@@ -844,7 +842,7 @@ def update_category_pages(app: Sphinx) -> None:
         css_content = import_file("rocm_blogs.static.css", "index.css")
         pagination_css = import_file("rocm_blogs.static.css", "pagination.css")
         
-        blogs_per_page = 24
+        blogs_per_page = 12
         
         # Process blog data using ROCmBlogs
         rocmblogs = ROCmBlogs()
@@ -1003,8 +1001,8 @@ def setup(app: Sphinx) -> dict:
 
     logger.info(f"Setting up ROCm Blogs extension, version: {__version__}")
     logger.info(f"Build process started at: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(_BUILD_START_TIME))}")
-
-    app.connect("builder-inited", run_metadata_generator)
+    
+    #app.connect("builder-inited", run_metadata_generator)
     app.connect("builder-inited", update_index_file)
     app.connect("builder-inited", update_posts_file)
     app.connect("builder-inited", update_category_pages)

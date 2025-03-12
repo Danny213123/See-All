@@ -225,7 +225,7 @@ html[data-theme="dark"] .container {
 .sd-card {
     border-radius: 0 !important;
     box-shadow: 0 4px 12px var(--shadow-light) !important;
-    transition: none !important;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
     overflow: hidden;
     margin-bottom: 20px;
     background-color: var(--card-bg-light);
@@ -234,15 +234,17 @@ html[data-theme="dark"] .container {
     display: flex !important;
     flex-direction: column !important;
     
-    will-change: auto; 
-    transform: none !important; 
-    backface-visibility: visible; 
+    will-change: transform, box-shadow, opacity; 
+    transform: translateZ(0) !important; 
+    backface-visibility: hidden; 
     contain: layout style; 
+    opacity: 1;
 }
 
 .sd-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px var(--shadow-light) !important;
+    transform: translateY(-2px) scale(1.02) translateZ(0) !important;
+    box-shadow: 0 8px 20px var(--hover-shadow-light) !important;
+    opacity: 0.98;
 }
 
 .small-sd-card-img-top.sd-card-img-top {
@@ -564,4 +566,3 @@ img {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 }
-
